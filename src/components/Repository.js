@@ -1,7 +1,7 @@
 import React from 'react'
 import RepositoryIssues from './RepositoryIssues'
 
-const Repository = ({ repository, onFetchMoreIssues }) => {
+const Repository = ({ repository, onFetchMoreIssues, onStarRepository }) => {
   return (
     <div>
       <p>
@@ -10,6 +10,9 @@ const Repository = ({ repository, onFetchMoreIssues }) => {
           {repository.name}
         </a>
       </p>
+      <button type="button" onClick={() => onStarRepository(repository.id, repository.viewerHasStarred)}>
+        {repository.viewerHasStarred ? 'Unstar' : 'Star' }
+      </button>
       <RepositoryIssues repository={repository} issues={repository.issues} onFetchMoreIssues={onFetchMoreIssues} />
     </div>
   )
