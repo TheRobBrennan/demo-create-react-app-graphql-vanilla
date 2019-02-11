@@ -10,35 +10,13 @@ export const axiosGitHubGraphQL = axios.create({
   },
 })
 
-// GraphQL Queries
-export const GET_ORGANIZATION = `
+// Naive GraphQL query function(s) to return a template literal
+export const getIssuesOfRepositoryQuery = (organization, repository) => `
   {
-    organization (login: "the-road-to-learn-react") {
+    organization (login: "${organization}") {
       name
       url
-    }
-  }
-`
-
-export const GET_REPOSITORY_OF_ORGANIZATION = `
-  {
-    organization (login: "the-road-to-learn-react") {
-      name
-      url
-      repository (name: "the-road-to-learn-react") {
-        name
-        url
-      }
-    }
-  }
-`
-
-export const GET_ISSUES_OF_REPOSITORY = `
-  {
-    organization (login: "the-road-to-learn-react") {
-      name
-      url
-      repository (name: "the-road-to-learn-react") {
+      repository (name: "${repository}") {
         name
         url
         issues (last: 5) {
