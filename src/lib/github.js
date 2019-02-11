@@ -60,8 +60,10 @@ const GET_ISSUES_OF_REPOSITORY = `
       name
       url
       repository (name: $repository) {
+        id
         name
         url
+        viewerHasStarred
         issues (first:5, after:$cursor, states: [OPEN]) {
           edges {
             node {
@@ -84,6 +86,25 @@ const GET_ISSUES_OF_REPOSITORY = `
             hasNextPage
           }
         }
+      }
+    }
+  }
+`
+
+// Add a star to the repositoryId
+export const addStarToRepository = repositoryId => {
+  return axiosGitHubGraphQL.post('', {
+    query: ADD_STAR,
+    variables: { repositoryId },
+  })
+}
+
+// GraphQL mutation to add a star to the repo
+const ADD_STAR = `
+  mutation ($repositoryId: ID!) {
+    addStar (input: {starrableId:$repositoryId}) {
+      starrable {
+        viewerHasStarred
       }
     }
   }
