@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
 import { TITLE } from './lib/constants'
-import {
-  axiosGitHubGraphQL,
-  GET_ISSUES_OF_REPOSITORY,
-} from './lib/github'
+import { axiosGitHubGraphQL, getIssuesOfRepositoryQuery } from './lib/github'
 import Organization from './components/Organization'
 
 // We are using class field declarations. This allows us the ability to omit the
@@ -18,7 +15,7 @@ class App extends Component {
 
   componentDidMount() {
     // Fetch data
-    this.onFetchFromGitHub()
+    this.onFetchFromGitHub(this.state.path)
   }
 
   onChange = event => {
@@ -27,16 +24,21 @@ class App extends Component {
 
   onSubmit = event => {
     // Fetch data
+    this.onFetchFromGitHub(this.state.path)
     event.preventDefault()
   }
 
-  onFetchFromGitHub = () => {
-    axiosGitHubGraphQL.post('', { query: GET_ISSUES_OF_REPOSITORY }).then(result => {
-      this.setState(() => ({
-        organization: result.data.data.organization,
-        errors: result.data.errors,
-      }))
-    })
+  onFetchFromGitHub = path => {
+    const [organization, repository] = path.split('/')
+
+    axiosGitHubGraphQL
+      .post('', { query: getIssuesOfRepositoryQuery(organization, repository) })
+      .then(result => {
+        this.setState(() => ({
+          organization: result.data.data.organization,
+          errors: result.data.errors,
+        }))
+      })
   }
 
   render() {
