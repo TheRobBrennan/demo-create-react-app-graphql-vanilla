@@ -1,4 +1,5 @@
 import React from 'react'
+import RepositoryIssues from './RepositoryIssues'
 
 const Repository = ({ repository }) => {
   return (
@@ -9,6 +10,7 @@ const Repository = ({ repository }) => {
           {repository.name}
         </a>
       </p>
+      <RepositoryIssues repository={repository} issues={repository.issues.edges} />
     </div>
   )
 }
