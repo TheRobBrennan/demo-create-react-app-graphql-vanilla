@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import { TITLE } from './lib/constants'
-import { axiosGitHubGraphQL, GET_ORGANIZATION } from './lib/github'
+import {
+  axiosGitHubGraphQL,
+  GET_REPOSITORY_OF_ORGANIZATION,
+} from './lib/github'
 import Organization from './components/Organization'
 
 // We are using class field declarations. This allows us the ability to omit the
@@ -28,7 +31,7 @@ class App extends Component {
   }
 
   onFetchFromGitHub = () => {
-    axiosGitHubGraphQL.post('', { query: GET_ORGANIZATION }).then(result => {
+    axiosGitHubGraphQL.post('', { query: GET_REPOSITORY_OF_ORGANIZATION }).then(result => {
       this.setState(() => ({
         organization: result.data.data.organization,
         errors: result.data.errors,
