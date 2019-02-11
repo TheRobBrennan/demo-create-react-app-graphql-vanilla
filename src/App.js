@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { TITLE } from './lib/constants'
-import { getIssuesOfRepository, resolveIssuesQuery } from './lib/github'
+import { getIssuesOfRepository, resolveIssuesQuery, addStarToRepository } from './lib/github'
 import Organization from './components/Organization'
 
 // We are using class field declarations. This allows us the ability to omit the
@@ -30,13 +30,17 @@ class App extends Component {
 
   onFetchFromGitHub = (path, cursor) => {
     getIssuesOfRepository(path, cursor).then(queryResult => {
-        this.setState(resolveIssuesQuery(queryResult, cursor))
-      })
+      this.setState(resolveIssuesQuery(queryResult, cursor))
+    })
   }
 
   onFetchMoreIssues = () => {
     const { endCursor } = this.state.organization.repository.issues.pageInfo
     this.onFetchFromGitHub(this.state.path, endCursor)
+  }
+
+  onStarRepository = (repositoryId, viewerHasStarred) => {
+    addStarToRepository(repositoryId)
   }
 
   render() {
@@ -62,7 +66,12 @@ class App extends Component {
 
         {/* Use conditional rendering to display either the component or a placeholder */}
         {organization ? (
-          <Organization organization={organization} onFetchMoreIssues={this.onFetchMoreIssues} errors={errors} />
+          <Organization
+            organization={organization}
+            errors={errors}
+            onFetchMoreIssues={this.onFetchMoreIssues}
+            onStarRepository={this.onStarRepository}
+          />
         ) : (
           <p>No information yet...</p>
         )}
