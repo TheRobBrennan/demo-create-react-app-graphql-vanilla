@@ -1,7 +1,7 @@
 import React from 'react'
 import RepositoryIssues from './RepositoryIssues'
 
-const Repository = ({ repository }) => {
+const Repository = ({ repository, onFetchMoreIssues }) => {
   return (
     <div>
       <p>
@@ -10,7 +10,7 @@ const Repository = ({ repository }) => {
           {repository.name}
         </a>
       </p>
-      <RepositoryIssues repository={repository} issues={repository.issues.edges} />
+      <RepositoryIssues repository={repository} issues={repository.issues} onFetchMoreIssues={onFetchMoreIssues} />
     </div>
   )
 }
