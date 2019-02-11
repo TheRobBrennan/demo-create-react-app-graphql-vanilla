@@ -1,18 +1,28 @@
 {
   "name": "demo-create-react-app-graphql-vanilla",
-  "version": "0.1.0",
+  "version": "0.0.0",
+  "author": "Rob Brennan <rob@therobbrennan.com>",
+  "license": "ISC",
   "private": true,
-  "dependencies": {
-    "react": "^16.8.1",
-    "react-dom": "^16.8.1",
-    "react-scripts": "2.1.4"
-  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "dependencies": {
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1",
+    "react-scripts": "2.1.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheRobBrennan/demo-create-react-app-graphql-vanilla.git"
+  },
+  "bugs": {
+    "url": "https://github.com/TheRobBrennan/demo-create-react-app-graphql-vanilla/issues"
+  },
+  "homepage": "https://github.com/TheRobBrennan/demo-create-react-app-graphql-vanilla#readme",
   "eslintConfig": {
     "extends": "react-app"
   },
