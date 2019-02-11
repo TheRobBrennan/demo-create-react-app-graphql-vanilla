@@ -1,16 +1,7 @@
 import React, { Component } from 'react'
-import axios from 'axios'
-
-const TITLE = 'React GraphQL GitHub Client'
-
-const axiosGitHubGraphQL = axios.create({
-  baseURL: process.env.REACT_APP_GITHUB_GRAPHQL_ENDPOINT,
-  headers: {
-    Authorization: `bearer ${
-      process.env.REACT_APP_GITHUB_PERSONAL_ACCESS_TOKEN
-    }`,
-  },
-})
+import { TITLE } from './lib/constants'
+import { axiosGitHubGraphQL, GET_ORGANIZATION } from './lib/github'
+import Organization from './components/Organization'
 
 // We are using class field declarations. This allows us the ability to omit the
 // constructor method for initializing local state, and eliminates the need to
@@ -18,10 +9,13 @@ const axiosGitHubGraphQL = axios.create({
 class App extends Component {
   state = {
     path: 'the-road-to-learn-react/the-road-to-learn-react',
+    organization: null,
+    errors: null,
   }
 
   componentDidMount() {
     // Fetch data
+    this.onFetchFromGitHub()
   }
 
   onChange = event => {
@@ -33,8 +27,17 @@ class App extends Component {
     event.preventDefault()
   }
 
+  onFetchFromGitHub = () => {
+    axiosGitHubGraphQL.post('', { query: GET_ORGANIZATION }).then(result => {
+      this.setState(() => ({
+        organization: result.data.data.organization,
+        errors: result.data.errors,
+      }))
+    })
+  }
+
   render() {
-    const { path } = this.state
+    const { path, organization, errors } = this.state
 
     return (
       <div>
@@ -54,7 +57,12 @@ class App extends Component {
 
         <hr />
 
-        {/* Here comes the result! */}
+        {/* Use conditional rendering to display either the component or a placeholder */}
+        {organization ? (
+          <Organization organization={organization} errors={errors} />
+        ) : (
+          <p>No information yet...</p>
+        )}
       </div>
     )
   }
