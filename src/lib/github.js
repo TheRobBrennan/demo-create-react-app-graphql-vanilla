@@ -10,15 +10,6 @@ export const axiosGitHubGraphQL = axios.create({
   },
 })
 
-// Naive GraphQL query function(s) to return a template literal
-export const getIssuesOfRepository = path => {
-  const [organization, repository] = path.split('/')
-
-  return axiosGitHubGraphQL.post('', {
-    query: getIssuesOfRepositoryQuery(organization, repository),
-  })
-}
-
 // This is a higher order function because we need to pass the result of
 // the promise, and also provide a function for the this.setState method
 // that will be consuming it.
@@ -27,15 +18,26 @@ export const resolveIssuesQuery = queryResult => () => ({
   errors: queryResult.data.errors,
 })
 
-export const getIssuesOfRepositoryQuery = (organization, repository) => `
-  {
-    organization (login: "${organization}") {
+// Naive GraphQL query function(s) to return a template literal
+export const getIssuesOfRepository = path => {
+  const [organization, repository] = path.split('/')
+
+  return axiosGitHubGraphQL.post('', {
+    query: GET_ISSUES_OF_REPOSITORY,
+    variables: { organization, repository },
+  })
+}
+
+// Let's use GraphQL variables to define our template literal
+const GET_ISSUES_OF_REPOSITORY = `
+  query ($organization: String!, $repository: String!) {
+    organization (login: $organization) {
       name
       url
-      repository (name: "${repository}") {
+      repository (name: $repository) {
         name
         url
-        issues (last: 5) {
+        issues (last:5) {
           edges {
             node {
               id
