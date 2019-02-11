@@ -1,4 +1,5 @@
 import React from 'react'
+import Repository from './Repository'
 
 const Organization = ({ organization, errors }) => {
   if (errors) {
@@ -22,6 +23,7 @@ const Organization = ({ organization, errors }) => {
           {organization.name}
         </a>
       </p>
+      <Repository repository={organization.repository} />
     </div>
   )
 }
