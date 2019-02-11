@@ -5,6 +5,8 @@ import {
   resolveIssuesQuery,
   addStarToRepository,
   resolveAddStarMutation,
+  removeStarFromRepository,
+  resolveRemoveStarMutation,
 } from './lib/github'
 import Organization from './components/Organization'
 
@@ -45,9 +47,15 @@ class App extends Component {
   }
 
   onStarRepository = (repositoryId, viewerHasStarred) => {
-    addStarToRepository(repositoryId).then(mutationResult =>
-      this.setState(resolveAddStarMutation(mutationResult))
-    )
+    if (!viewerHasStarred) {
+      addStarToRepository(repositoryId).then(mutationResult =>
+        this.setState(resolveAddStarMutation(mutationResult))
+      )
+    } else {
+      removeStarFromRepository(repositoryId).then(mutationResult =>
+        this.setState(resolveRemoveStarMutation(mutationResult))
+      )
+    }
   }
 
   render() {

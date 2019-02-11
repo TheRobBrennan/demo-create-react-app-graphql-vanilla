@@ -137,3 +137,47 @@ export const resolveAddStarMutation = mutationResult => state => {
     }
   }
 }
+
+// Remmove a star for the repositoryId
+export const removeStarFromRepository = repositoryId => {
+  return axiosGitHubGraphQL.post('', {
+    query: REMOVE_STAR,
+    variables: { repositoryId },
+  })
+}
+
+// GraphQL mutation to add a star to the repo
+const REMOVE_STAR = `
+  mutation ($repositoryId: ID!) {
+    removeStar (input: {starrableId:$repositoryId}) {
+      starrable {
+        viewerHasStarred
+      }
+    }
+  }
+`
+
+// When resolving the promise from the mutation, you can find out about the
+// viewerHasStarred property in the result. That's because we defined it as
+// a field in the response from our mutation (above).
+//
+// viewerHasStarred is the only property that changed, but we will be using
+// the spread operator to keep local state intact.
+export const resolveRemoveStarMutation = mutationResult => state => {
+  const { viewerHasStarred } = mutationResult.data.data.removeStar.starrable
+  const { totalCount } = state.organization.repository.stargazers
+
+  return {
+    ...state,
+    organization: {
+      ...state.organization,
+      repository: {
+        ...state.organization.repository,
+        viewerHasStarred,
+        stargazers: {
+          totalCount: totalCount - 1
+        }
+      }
+    }
+  }
+}
