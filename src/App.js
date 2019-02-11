@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { TITLE } from './lib/constants'
 import {
   axiosGitHubGraphQL,
-  GET_REPOSITORY_OF_ORGANIZATION,
+  GET_ISSUES_OF_REPOSITORY,
 } from './lib/github'
 import Organization from './components/Organization'
 
@@ -31,7 +31,7 @@ class App extends Component {
   }
 
   onFetchFromGitHub = () => {
-    axiosGitHubGraphQL.post('', { query: GET_REPOSITORY_OF_ORGANIZATION }).then(result => {
+    axiosGitHubGraphQL.post('', { query: GET_ISSUES_OF_REPOSITORY }).then(result => {
       this.setState(() => ({
         organization: result.data.data.organization,
         errors: result.data.errors,
