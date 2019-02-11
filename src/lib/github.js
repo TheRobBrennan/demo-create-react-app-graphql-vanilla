@@ -121,6 +121,7 @@ const ADD_STAR = `
 // the spread operator to keep local state intact.
 export const resolveAddStarMutation = mutationResult => state => {
   const { viewerHasStarred } = mutationResult.data.data.addStar.starrable
+  const { totalCount } = state.organization.repository.stargazers
 
   return {
     ...state,
@@ -129,6 +130,9 @@ export const resolveAddStarMutation = mutationResult => state => {
       repository: {
         ...state.organization.repository,
         viewerHasStarred,
+        stargazers: {
+          totalCount: totalCount + 1
+        }
       }
     }
   }
