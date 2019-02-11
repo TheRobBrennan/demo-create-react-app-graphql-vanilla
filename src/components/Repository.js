@@ -11,6 +11,7 @@ const Repository = ({ repository, onFetchMoreIssues, onStarRepository }) => {
         </a>
       </p>
       <button type="button" onClick={() => onStarRepository(repository.id, repository.viewerHasStarred)}>
+        {repository.stargazers.totalCount}&nbsp;
         {repository.viewerHasStarred ? 'Unstar' : 'Star' }
       </button>
       <RepositoryIssues repository={repository} issues={repository.issues} onFetchMoreIssues={onFetchMoreIssues} />
