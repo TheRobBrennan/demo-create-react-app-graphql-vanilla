@@ -28,10 +28,15 @@ class App extends Component {
     event.preventDefault()
   }
 
-  onFetchFromGitHub = path => {
-    getIssuesOfRepository(path).then(queryResult => {
-        this.setState(resolveIssuesQuery(queryResult))
+  onFetchFromGitHub = (path, cursor) => {
+    getIssuesOfRepository(path, cursor).then(queryResult => {
+        this.setState(resolveIssuesQuery(queryResult, cursor))
       })
+  }
+
+  onFetchMoreIssues = () => {
+    const { endCursor } = this.state.organization.repository.issues.pageInfo
+    this.onFetchFromGitHub(this.state.path, endCursor)
   }
 
   render() {
@@ -57,7 +62,7 @@ class App extends Component {
 
         {/* Use conditional rendering to display either the component or a placeholder */}
         {organization ? (
-          <Organization organization={organization} errors={errors} />
+          <Organization organization={organization} onFetchMoreIssues={this.onFetchMoreIssues} errors={errors} />
         ) : (
           <p>No information yet...</p>
         )}
