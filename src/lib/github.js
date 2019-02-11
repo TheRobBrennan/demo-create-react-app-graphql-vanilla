@@ -109,3 +109,24 @@ const ADD_STAR = `
     }
   }
 `
+
+// When resolving the promise from the mutation, you can find out about the
+// viewerHasStarred property in the result. That's because we defined it as
+// a field in the response from our mutation (above).
+//
+// viewerHasStarred is the only property that changed, but we will be using
+// the spread operator to keep local state intact.
+export const resolveAddStarMutation = mutationResult => state => {
+  const { viewerHasStarred } = mutationResult.data.data.addStar.starrable
+
+  return {
+    ...state,
+    organization: {
+      ...state.organization,
+      repository: {
+        ...state.organization.repository,
+        viewerHasStarred,
+      }
+    }
+  }
+}
