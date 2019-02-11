@@ -1,7 +1,12 @@
 import React from 'react'
 import Repository from './Repository'
 
-const Organization = ({ organization, errors, onFetchMoreIssues }) => {
+const Organization = ({
+  organization,
+  errors,
+  onFetchMoreIssues,
+  onStarRepository,
+}) => {
   if (errors) {
     // Uh oh. Display any error message(s)
     return (
@@ -16,14 +21,14 @@ const Organization = ({ organization, errors, onFetchMoreIssues }) => {
   return (
     <div>
       <p>
-        <strong>
-          Issues from Organization:
-        </strong>
-        <a href={organization.url}>
-          {organization.name}
-        </a>
+        <strong>Issues from Organization:</strong>
+        <a href={organization.url}>{organization.name}</a>
       </p>
-      <Repository repository={organization.repository} onFetchMoreIssues={onFetchMoreIssues} />
+      <Repository
+        repository={organization.repository}
+        onFetchMoreIssues={onFetchMoreIssues}
+        onStarRepository={onStarRepository}
+      />
     </div>
   )
 }
