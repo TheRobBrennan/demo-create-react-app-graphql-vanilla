@@ -1,6 +1,11 @@
 import React, { Component } from 'react'
 import { TITLE } from './lib/constants'
-import { getIssuesOfRepository, resolveIssuesQuery, addStarToRepository } from './lib/github'
+import {
+  getIssuesOfRepository,
+  resolveIssuesQuery,
+  addStarToRepository,
+  resolveAddStarMutation,
+} from './lib/github'
 import Organization from './components/Organization'
 
 // We are using class field declarations. This allows us the ability to omit the
@@ -40,7 +45,9 @@ class App extends Component {
   }
 
   onStarRepository = (repositoryId, viewerHasStarred) => {
-    addStarToRepository(repositoryId)
+    addStarToRepository(repositoryId).then(mutationResult =>
+      this.setState(resolveAddStarMutation(mutationResult))
+    )
   }
 
   render() {
